@@ -15,9 +15,6 @@
     <top>
         <HBox fx:id="topBox" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <HBox fx:id="playerBox" prefHeight="100.0" prefWidth="200.0"/>
-            <Button fx:id="homeButton" mnemonicParsing="false" prefHeight="100.0" prefWidth="200.0" text="Home"/>
-            <Button fx:id="worldButton" mnemonicParsing="false" prefHeight="100.0" prefWidth="200.0" text="World"/>
-            <Button fx:id="peopleButton" mnemonicParsing="false" prefHeight="100.0" prefWidth="200.0" text="People"/>
         </HBox>
     </top>
     <center>

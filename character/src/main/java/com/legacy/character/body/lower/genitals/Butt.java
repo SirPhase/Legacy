@@ -6,6 +6,10 @@ import com.legacy.character.body.BodySize;
 import com.legacy.character.race.Race;
 
 public class Butt extends BodyPart {
+
+    private double fatPercent;
+    private double musclePercent;
+
     public Butt() {
         super();
     }

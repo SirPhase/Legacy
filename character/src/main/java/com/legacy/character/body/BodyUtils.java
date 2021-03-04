@@ -58,32 +58,32 @@ public class BodyUtils {
         try {
             builder.appendAnus((Anus) determineBodyPartFromParents(new Anus(), father.getBody().getAnus(), mother.getBody().getAnus()));
         } catch (CharacterException ex) {
-            LOGGER.warn(ex + "; Anus");
+            LOGGER.warn(ex.getMessage() + "; Anus");
         }
         try {
             builder.appendHorn((Horn) determineBodyPartFromParents(new Horn(), father.getBody().getHorn(), mother.getBody().getHorn()));
         } catch (CharacterException ex) {
-            LOGGER.warn(ex + "; Horn");
+            LOGGER.warn(ex.getMessage() + "; Horn");
         }
         try {
             builder.appendTail((Tail) determineBodyPartFromParents(new Tail(), father.getBody().getTail(), mother.getBody().getTail()));
         } catch (CharacterException ex) {
-            LOGGER.warn(ex + "; Tail");
+            LOGGER.warn(ex.getMessage() + "; Tail");
         }
         try {
             builder.appendWing((Wing) determineBodyPartFromParents(new Wing(), father.getBody().getWing(), mother.getBody().getWing()));
         } catch (CharacterException ex) {
-            LOGGER.warn(ex + "; Wing");
+            LOGGER.warn(ex.getMessage() + "; Wing");
         }
         try {
             builder.appendBodyHair((BodyHair) determineBodyPartFromParents(new BodyHair(), father.getBody().getBodyHair(), mother.getBody().getBodyHair()));
         } catch (CharacterException ex) {
-            LOGGER.warn(ex + "; BodyHair");
+            LOGGER.warn(ex.getMessage() + "; BodyHair");
         }
         try {
             builder.appendPubicHair((PubicHair) determineBodyPartFromParents(new PubicHair(), father.getBody().getPubicHair(), mother.getBody().getPubicHair()));
         } catch (CharacterException ex) {
-            LOGGER.warn(ex + "; PubicHair");
+            LOGGER.warn(ex.getMessage() + "; PubicHair");
         }
 
 

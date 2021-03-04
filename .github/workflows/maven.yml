@@ -58,5 +58,5 @@ jobs:
     - run: mkdir staging && cp ${{ matrix.files }} staging
     - uses: actions/upload-artifact@v2
       with:
-        name: Package
+        name: LegacyGame
         path: staging

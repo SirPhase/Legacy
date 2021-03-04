@@ -85,20 +85,20 @@ public class CharacterUtils {
         }
 
         if (Gender.MALE.equals(gender)) {
-            return maleNames.get((int) rand(0, maleNames.size()));
+            return maleNames.get(rand(0, maleNames.size()));
         } else if (Gender.FEMALE.equals(gender)) {
-            return femaleNames.get((int) rand(0, femaleNames.size()));
+            return femaleNames.get(rand(0, femaleNames.size()));
         } else {
             LOGGER.warn("Received invalid gender '" + gender + "', returning random name");
             if (rand(0,1) == 0) {
-                return maleNames.get((int) rand(0, maleNames.size()));
+                return maleNames.get(rand(0, maleNames.size()));
             } else {
-                return femaleNames.get((int) rand(0, femaleNames.size()));
+                return femaleNames.get(rand(0, femaleNames.size()));
             }
         }
     }
 
     public static String getRandomSurname() {
-        return surnames.get((int) rand(0, surnames.size()));
+        return surnames.get(rand(0, surnames.size()));
     }
 }

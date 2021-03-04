@@ -19,6 +19,7 @@ public class Utils {
 
     private static Properties properties;
     private static Date date;
+    private static final Random random = new Random();
 
     private Utils() {}
 
@@ -47,12 +48,15 @@ public class Utils {
     }
 
     public static int rand(int min, int max) {
-        return (int) rand((double) min, max);
+        return (int) rand((long) min, max);
+    }
+
+    public static long rand(long min, long max) {
+        return Math.round(rand((double) min, max));
     }
 
     public static double rand(double min, double max) {
-        Random r = new Random();
-        return min + (max - min) * r.nextDouble();
+        return min + (max - min) * random.nextDouble();
     }
 
     public static String capitalize(String string) {

@@ -1,33 +1,28 @@
 package com.legacy.ui;
 
-import com.legacy.character.CharacterException;
-import com.legacy.character.CharacterUtils;
-import com.legacy.character.slave.Slave;
+import com.legacy.ui.scenes.MainPages;
 import com.legacy.utils.Constants;
-import com.legacy.utils.Utils;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
-import static com.legacy.character.CharacterUtils.getPlayer;
 import static com.legacy.ui.ControllerUtils.*;
-import static com.legacy.ui.FXUtils.gameInfo;
-import static com.legacy.world.WorldUtils.getHome;
 
 public class Controller extends BorderPane implements Initializable {
 
@@ -39,8 +34,9 @@ public class Controller extends BorderPane implements Initializable {
     @FXML
     public VBox leftBox, centerBox, rightBox;
 
-    @FXML
-    public Button homeButton, worldButton, peopleButton;
+    private Scene mainScene;
+
+    private Pane previousPage;
 
     public Controller() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource(Constants.MAIN_FXML_FILE));
@@ -51,14 +47,27 @@ public class Controller extends BorderPane implements Initializable {
         } catch (IOException ex) {
             LOGGER.error(ex.getMessage());
         }
-        homeButton.setOnAction(actionEvent -> homeScreen());
-        worldButton.setOnAction(actionEvent -> worldScreen());
-        peopleButton.setOnAction(actionEvent -> peopleScreen());
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Intentionally left blank
+    }
 
+    public Scene getMainScene() {
+        return this.mainScene;
+    }
+
+    public void setMainScene(Scene scene) {
+        this.mainScene = scene;
+    }
+
+    public Pane getPreviousPage() throws NoSuchFieldException {
+        if (Objects.nonNull(previousPage)) {
+            return previousPage;
+        } else {
+            throw new NoSuchFieldException();
+        }
     }
 
     public void addCenter(Node node) {
@@ -71,9 +80,33 @@ public class Controller extends BorderPane implements Initializable {
         gameInfo();
     }
 
+    public void displayPage(Pane parent) {
+        displayPage(parent, false);
+    }
+
+    public void displayPage(Pane parent, boolean back) {
+        previousPage = new VBox();
+        previousPage.getChildren().addAll(centerBox.getChildren());
+        clearCenter();
+        addCenter(parent);
+        if (back) {
+            addCenter(ControllerUtils.backButton(previousPage));
+        }
+    }
+
+    public void displayPage(Pane parent, EventHandler<ActionEvent> backEvent) {
+        clearCenter();
+        addCenter(parent);
+        addCenter(ControllerUtils.backButton(backEvent));
+    }
+
+    /**
+     * Display the start/menu screen
+     */
     public void startScreen() {
         topBox.setVisible(false);
-        clearNode(centerBox);
+        clearCenter();
+        displayPage(MainPages.startPage());
     }
 
     /**
@@ -81,23 +114,7 @@ public class Controller extends BorderPane implements Initializable {
      */
     public void homeScreen() {
         clearCenter();
-        // Base related information
-        TextFlow baseText = new TextFlow();
-        Text baseName = new Text(getHome().getName() + "\n");
-        Text baseDescription = new Text(getHome().generateHomeText());
-        VBox slavesBox = new VBox();
-        addNode(slavesBox, new Label("Slaves"));
-        for (Slave slave : getPlayer().getSlaves()) {
-            Text slaveText = new Text(slave.getFullName());
-            slaveText.onMouseClickedProperty().setValue(FXUtils.slavePage(slave));
-            slaveText.setCursor(Cursor.HAND);
-            addNode(slavesBox, slaveText);
-        }
-        addNode(baseText, baseName, baseDescription, slavesBox);
-        addCenter(baseText);
-        // Base actions
-
-        // Notes and updates
+        displayPage(MainPages.homePage());
     }
 
     /**
@@ -105,24 +122,7 @@ public class Controller extends BorderPane implements Initializable {
      */
     public void worldScreen() {
         clearCenter();
-        HBox locationsBox = new HBox();
-
-        // Have a random assortment of slaves and people wandering around
-
-        // Slave Market
-//        Button slaveMarketButton = Utils.createButton("Slave Market", e -> {
-//           SlaveMarket.slavesScreen();
-//        });
-
-        // Normal Market
-
-        // University
-        // attend classes, capture university students
-
-        // The Lucky Cat tavern
-
-//        addNode(locationsBox, slaveMarketButton);
-        addCenter(locationsBox);
+        displayPage(MainPages.WorldPage());
     }
 
     /**
@@ -130,38 +130,11 @@ public class Controller extends BorderPane implements Initializable {
      */
     public void peopleScreen() {
         clearCenter();
-        VBox slavesBox = new VBox(); // Box for list of slaves
-        for (Slave slave : CharacterUtils.getPlayer().getSlaves()) {
-            Button slaveButton = FXUtils.createButton(slave.getFullName(), e -> {
-                clearCenter();
-                TextFlow slaveText = new TextFlow(); // Slave text information
-                Text name = new Text(slave.getFullName());
-                name.setStyle("-fx-font-weight: bold");
-                Text meta = new Text(slave.getFormattedMeta() + "\n");
-                Text description = new Text(slave.getDescription() + "\n");
-                addNode(slaveText, name, meta, description);
-                addCenter(slaveText);
-                HBox interactionsBox = new HBox(); // Box for slave interactions
-                Button talkButton = FXUtils.createButton("Talk", e1 -> {
+    }
 
-                });
-                addNode(interactionsBox, talkButton);
-                if (slave.getAge() >= Integer.parseInt(Utils.getProperties().getProperty(Constants.CONFIG_MINIMUM_AGE))) {
-                    Button breedButton = FXUtils.createButton("Breed", actionEvent -> {
-                        try {
-                            slave.impregnatedBy(CharacterUtils.getPlayer());
-                        } catch (CharacterException ex) {
-                            LOGGER.error(ex);
-                        }
-                    });
-                    addNode(interactionsBox, breedButton);
-                }
-                Button backButton;
-                backButton = FXUtils.backButton(e1 -> peopleScreen());
-                addNode(centerBox, interactionsBox, backButton);
-            });
-            addNode(slavesBox, slaveButton);
+    public void addStyleSheet(String styleSheet) {
+        if (Objects.nonNull(Controller.class.getClassLoader().getResource(styleSheet))) {
+            mainScene.getStylesheets().add(Objects.requireNonNull(Controller.class.getClassLoader().getResource(styleSheet)).toExternalForm());
         }
-        addCenter(slavesBox);
     }
 }

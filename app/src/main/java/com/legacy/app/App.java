@@ -33,15 +33,18 @@ public class App extends Application {
         ControllerUtils.setController(new Controller());
 
         stage.setTitle("Legacy v" + getProperty(Constants.CONFIG_VERSION));
-        stage.setScene(new Scene(getController()));
+        Scene scene = new Scene(getController());
+        getController().setMainScene(scene);
+        getController().addStyleSheet("stylesheet.css");
+        stage.setScene(scene);
         stage.show();
 
+        LOGGER.debug("Application Setup");
         if (Boolean.parseBoolean(getProperty(Constants.CONFIG_DEBUG))) {
             debugStart();
         } else {
             start();
         }
-        LOGGER.debug("Application Setup");
     }
 
     public static void main(String[] args) {
@@ -63,7 +66,8 @@ public class App extends Application {
         Slave slave = SlaveUtils.generateSlave(getPlayer().getId());
         slave.setAge(Integer.parseInt(getProperty(Constants.CONFIG_MINIMUM_AGE)));
 
-        getController().homeScreen();
+//        getController().homeScreen();
+        start();
     }
 
     public void newGame() {

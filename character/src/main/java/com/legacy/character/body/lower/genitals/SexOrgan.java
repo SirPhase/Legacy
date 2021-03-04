@@ -8,6 +8,7 @@ import com.legacy.character.race.Race;
 public class SexOrgan extends BodyPart {
 
     private boolean virgin;
+    private long sexCount;
 
     protected SexOrgan() {
         super();

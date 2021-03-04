@@ -36,6 +36,14 @@ public abstract class GameCharacter {
     protected UUID motherID;
     protected List<UUID> childrenIDList;
 
+    protected List<TraitsEnum> traitsList;
+    protected HungerEnum hunger;
+    protected MoodEnum mood;
+
+    // Ranges from -100 to 100
+    protected int submission;
+    protected int corruption;
+
     protected Career career;
 
     protected GameCharacter() {
@@ -190,6 +198,30 @@ public abstract class GameCharacter {
         this.career = career;
     }
 
+    public List<TraitsEnum> getTraitsList() {
+        if (Objects.isNull(this.traitsList)) {
+            this.traitsList = new ArrayList<>();
+        }
+        return this.traitsList;
+    }
+
+    public HungerEnum getHunger() {
+        return hunger;
+    }
+
+    public void setHunger(HungerEnum hunger) {
+        this.hunger = hunger;
+    }
+
+    public MoodEnum getMood() {
+        return mood;
+    }
+
+    public void setMood(MoodEnum mood) {
+        this.mood = mood;
+    }
+
+
     public String getFormattedMeta() {
         return " | " + this.getAge() + " years old | " + this.getRace() + " | " + this.getGender();
     }
@@ -216,7 +248,6 @@ public abstract class GameCharacter {
             throw new CharacterException("Parent(s) are not defined");
         }
     }
-
 
     /*
     Impregnation

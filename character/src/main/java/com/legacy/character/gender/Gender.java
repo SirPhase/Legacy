@@ -42,28 +42,28 @@ public enum Gender {
     }
 
     public String getSubject() {
-        return this.name;
+        return this.subject;
     }
 
     public String getObject() {
-        return this.name;
+        return this.object;
     }
 
     public String getPossessiveAdj() {
-        return this.name;
+        return this.possessiveAdj;
     }
 
     public String getPossessive() {
-        return this.name;
+        return this.possessive;
     }
 
     public String getReflexive() {
-        return this.name;
+        return this.reflexive;
     }
 
     public static Gender determineGender(GameCharacter father, GameCharacter mother) {
         double maleChance = (father.getRace().getMaleOffspringWeight() + mother.getRace().getMaleOffspringWeight())/2;
-        double value = Utils.rand(0,1);
+        double value = Utils.rand(0d,1d);
         if (value <= maleChance) {
             LOGGER.debug("Gender determined: " + MALE + " (" + (maleChance*100) + "% chance)");
             return MALE;
